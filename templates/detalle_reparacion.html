@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ reparacion.numeroOrden }}</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body class="page-container">
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>{{ session["nombre"] }}</span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <main class="page-content">
+
+        <a
+            href="{{ url_for('detalle_equipo', idEquipo=reparacion.idEquipo) }}"
+            class="btn-volver"
+        >
+            ← Volver al equipo
+        </a>
+
+
+        <div class="page-header">
+
+            <h2>
+                {{ reparacion.numeroOrden }}
+            </h2>
+
+            <p>
+                Detalle de la orden de reparación
+            </p>
+
+        </div>
+
+
+        <!-- ESTADO -->
+
+        <section class="info-card">
+
+            <h3>Estado de la reparación</h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <strong>Estado</strong>
+
+                    <span>
+                        {{ reparacion.estado }}
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <strong>Prioridad</strong>
+
+                    <span>
+                        {{ reparacion.prioridad }}
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <strong>Técnico asignado</strong>
+
+                    <span>
+                        {% if reparacion.nombreTecnico %}
+                            {{ reparacion.nombreTecnico }}
+                            {{ reparacion.apellidoTecnico }}
+                        {% else %}
+                            Sin asignar
+                        {% endif %}
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <strong>Fecha de ingreso</strong>
+
+                    <span>
+                        {{ reparacion.fechaIngreso }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CLIENTE -->
+
+        <section class="info-card">
+
+            <h3>Cliente</h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <strong>Nombre</strong>
+
+                    <span>
+                        {{ reparacion.nombreCliente }}
+                        {{ reparacion.apellidoCliente }}
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <strong>ID Cliente</strong>
+
+                    <span>
+                        #{{ reparacion.idCliente }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- EQUIPO -->
+
+        <section class="info-card">
+
+            <h3>Equipo</h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <strong>Tipo</strong>
+
+                    <span>
+                        {{ reparacion.tipo }}
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <strong>Marca</strong>
+
+                    <span>
+                        {{ reparacion.marca }}
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <strong>Modelo</strong>
+
+                    <span>
+                        {{ reparacion.modelo or "Sin especificar" }}
+                    </span>
+
+                </div>
+
+                <div class="info-item">
+
+                    <strong>Número de serie</strong>
+
+                    <span>
+                        {{ reparacion.numeroSerie or "Sin especificar" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROBLEMA -->
+
+        <section class="info-card">
+
+            <h3>Problema informado</h3>
+
+            <p>
+                {{ reparacion.problemaInformado or "Sin información" }}
+            </p>
+
+        </section>
+
+
+        <!-- OBSERVACIONES -->
+
+        <section class="info-card">
+
+            <h3>Observaciones</h3>
+
+            <p>
+                {{ reparacion.observaciones or "Sin observaciones" }}
+            </p>
+
+        </section>
+
+        <!-- DIAGNÓSTICO -->
+
+<section class="info-card">
+
+    <h3>Diagnóstico técnico</h3>
+
+    {% if reparacion.diagnosticoDescripcion %}
+
+        <p>
+            <strong>Descripción:</strong>
+        </p>
+
+        <p>
+            {{ reparacion.diagnosticoDescripcion }}
+        </p>
+
+        <br>
+
+        <p>
+            <strong>Observaciones del diagnóstico:</strong>
+        </p>
+
+        <p>
+            {{ reparacion.diagnosticoObservaciones or "Sin observaciones" }}
+        </p>
+
+    {% else %}
+
+        <p>
+            Todavía no se registró un diagnóstico para esta orden.
+        </p>
+
+    {% endif %}
+
+</section>
+
+<!-- TRABAJO REALIZADO -->
+
+<section class="info-card">
+
+    <h3>Trabajo realizado</h3>
+
+    {% if reparacion.trabajoRealizado %}
+
+        <p>
+            {{ reparacion.trabajoRealizado }}
+        </p>
+
+    {% else %}
+
+        <p>
+            Todavía no se registró el trabajo realizado.
+        </p>
+
+    {% endif %}
+
+</section>
+
+{% if reparacion.idEstado == 4 or reparacion.idEstado == 5 %}
+
+<section class="form-card">
+
+    <h3>Registrar trabajo realizado</h3>
+
+    <form
+        method="POST"
+        action="{{ url_for('guardar_trabajo_reparacion', idOrden=reparacion.idOrden) }}"
+    >
+
+        <div class="form-field">
+
+            <label for="trabajoRealizado">
+                Descripción del trabajo
+            </label>
+
+            <textarea
+                name="trabajoRealizado"
+                id="trabajoRealizado"
+                rows="7"
+                required
+                placeholder="Describí las tareas realizadas sobre el equipo."
+            >{{ reparacion.trabajoRealizado or "" }}</textarea>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit">
+                Guardar trabajo
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endif %}
+
+<!-- CONTROL DE CALIDAD -->
+
+<section class="info-card">
+
+    <h3>Control de calidad</h3>
+
+    {% if reparacion.resultadoControl %}
+
+        <p>
+            <strong>Resultado:</strong>
+        </p>
+
+        <p>
+            {{ reparacion.resultadoControl }}
+        </p>
+
+        <br>
+
+        <p>
+            <strong>Observaciones:</strong>
+        </p>
+
+        <p>
+            {{ reparacion.observacionesControl or "Sin observaciones" }}
+        </p>
+
+    {% else %}
+
+        <p>
+            Todavía no se realizó el control de calidad.
+        </p>
+
+    {% endif %}
+
+</section>
+
+<!-- PRESUPUESTO -->
+
+<section class="info-card">
+
+    <h3>Presupuesto</h3>
+
+    {% if presupuesto %}
+
+        <div class="info-grid">
+
+            <div class="info-item">
+
+                <strong>Estado</strong>
+
+                <span>
+                    {{ presupuesto.estado }}
+                </span>
+
+            </div>
+
+            <div class="info-item">
+
+                <strong>Fecha</strong>
+
+                <span>
+                    {{ presupuesto.fecha }}
+                </span>
+
+            </div>
+
+            <div class="info-item">
+
+                <strong>Subtotal</strong>
+
+                <span>
+                    ${{ "%.2f"|format(presupuesto.subtotal) }}
+                </span>
+
+            </div>
+
+            <div class="info-item">
+
+                <strong>Descuento</strong>
+
+                <span>
+                    ${{ "%.2f"|format(presupuesto.descuento) }}
+                </span>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <h4>Detalle</h4>
+
+        <div style="overflow-x: auto; margin-top: 15px;">
+
+            <table style="width: 100%; border-collapse: collapse;">
+
+                <thead>
+
+                    <tr>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Descripción
+                        </th>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Cantidad
+                        </th>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Precio unitario
+                        </th>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Subtotal
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for detalle in detalles_presupuesto %}
+
+                        <tr>
+
+                            <td style="padding: 12px;">
+                                {{ detalle.descripcion }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ detalle.cantidad }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                ${{ "%.2f"|format(detalle.precioUnitario) }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                ${{ "%.2f"|format(detalle.subtotal) }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <br>
+
+        <div class="info-item">
+
+            <strong>Total</strong>
+
+            <span style="font-size: 22px; font-weight: bold;">
+                ${{ "%.2f"|format(presupuesto.total) }}
+            </span>
+
+        </div>
+
+        <br>
+
+        <p>
+
+            <strong>Observaciones:</strong>
+
+            {{ presupuesto.observaciones or "Sin observaciones" }}
+
+            {% if presupuesto.estado == "Pendiente" %}
+
+    <div class="form-actions" style="margin-top: 20px;">
+
+        <form
+            method="POST"
+            action="{{ url_for('aprobar_presupuesto', idPresupuesto=presupuesto.idPresupuesto) }}"
+        >
+            <button type="submit">
+                Aprobar presupuesto
+            </button>
+        </form>
+
+
+        <form
+            method="POST"
+            action="{{ url_for('rechazar_presupuesto', idPresupuesto=presupuesto.idPresupuesto) }}"
+        >
+            <button
+                type="submit"
+                class="btn-secundario"
+            >
+                Rechazar presupuesto
+            </button>
+        </form>
+
+    </div>
+
+{% endif %}
+
+        </p>
+
+    {% else %}
+
+        <p>
+            Esta orden todavía no tiene un presupuesto.
+        </p>
+
+    {% endif %}
+
+</section>
+
+<!-- REPUESTOS UTILIZADOS -->
+
+<section class="info-card">
+
+    <div style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    ">
+
+        <div>
+
+            <h3>Repuestos utilizados</h3>
+
+            <p>
+                Repuestos registrados en esta reparación.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('agregar_repuesto_reparacion', idOrden=reparacion.idOrden) }}"
+            style="text-decoration: none;"
+        >
+
+            <button
+                type="button"
+                style="width: auto;"
+            >
+                + Agregar repuesto
+            </button>
+
+        </a>
+
+    </div>
+
+
+    {% if repuestos_reparacion %}
+
+        <div style="overflow-x: auto;">
+
+            <table
+                style="
+                    width: 100%;
+                    border-collapse: collapse;
+                "
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Código
+                        </th>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Repuesto
+                        </th>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Cantidad
+                        </th>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Precio unitario
+                        </th>
+
+                        <th style="padding: 12px; text-align: left;">
+                            Subtotal
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for repuesto in repuestos_reparacion %}
+
+                        <tr>
+
+                            <td style="padding: 12px;">
+                                {{ repuesto.codigo }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ repuesto.nombre }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ repuesto.cantidad }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                ${{ "%.2f"|format(repuesto.precioUnitario) }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                ${{ "%.2f"|format(repuesto.subtotal) }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <p>
+            Todavía no se registraron repuestos para esta reparación.
+        </p>
+
+    {% endif %}
+
+</section>
+
+        <!-- ACCIONES -->
+
+<section class="info-card">
+
+    <h3>Acciones</h3>
+
+    <form
+        method="POST"
+        action="{{ url_for('cambiar_estado_reparacion', idOrden=reparacion.idOrden) }}"
+    >
+
+        <div class="form-field">
+
+            <label for="idEstado">
+                Cambiar estado de la reparación
+            </label>
+
+            <select
+                name="idEstado"
+                id="idEstado"
+                required
+            >
+
+                <option
+                    value="1"
+                    {% if reparacion.idEstado == 1 %}selected{% endif %}
+                >
+                    Ingresado
+                </option>
+
+                <option
+                    value="2"
+                    {% if reparacion.idEstado == 2 %}selected{% endif %}
+                >
+                    En diagnóstico
+                </option>
+
+                <option
+                    value="3"
+                    {% if reparacion.idEstado == 3 %}selected{% endif %}
+                >
+                    Presupuesto pendiente
+                </option>
+
+                <option
+                    value="4"
+                    {% if reparacion.idEstado == 4 %}selected{% endif %}
+                >
+                    Presupuesto aprobado
+                </option>
+
+                <option
+                    value="5"
+                    {% if reparacion.idEstado == 5 %}selected{% endif %}
+                >
+                    En reparación
+                </option>
+
+                <option
+                    value="6"
+                    {% if reparacion.idEstado == 6 %}selected{% endif %}
+                >
+                    Control de calidad
+                </option>
+
+                <option
+                    value="7"
+                    {% if reparacion.idEstado == 7 %}selected{% endif %}
+                >
+                    Listo para retirar
+                </option>
+
+                <option
+                    value="8"
+                    {% if reparacion.idEstado == 8 %}selected{% endif %}
+                >
+                    Entregado
+                </option>
+
+                <option
+                    value="9"
+                    {% if reparacion.idEstado == 9 %}selected{% endif %}
+                >
+                    Cancelado
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit">
+                Actualizar estado
+            </button>
+
+           <a
+            href="{{ url_for('registrar_diagnostico', idOrden=reparacion.idOrden) }}"
+            style="text-decoration: none;"
+>
+                <button
+                    type="button"
+                    class="btn-secundario"
+                >
+                    Registrar diagnóstico
+                </button>
+</a>
+
+<a
+    href="{{ url_for('nuevo_presupuesto', idOrden=reparacion.idOrden) }}"
+    style="text-decoration: none;"
+>
+    <button
+        type="button"
+        class="btn-secundario"
+    >
+        Crear presupuesto
+    </button>
+</a>
+
+<a
+    href="{{ url_for('registrar_control_calidad', idOrden=reparacion.idOrden) }}"
+    style="text-decoration: none;"
+>
+    <button
+        type="button"
+        class="btn-secundario"
+    >
+        Control de calidad
+    </button>
+</a>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% if reparacion.idEstado == 7 %}
+
+<section class="info-card">
+
+    <h3>Entrega del equipo</h3>
+
+    <p>
+        El equipo está listo para ser entregado al cliente.
+    </p>
+
+    <div style="margin-top: 20px;">
+
+        <a
+            href="{{ url_for('registrar_entrega', idOrden=reparacion.idOrden) }}"
+            style="text-decoration: none;"
+        >
+            <button type="button">
+                Registrar entrega
+            </button>
+        </a>
+
+    </div>
+
+</section>
+
+{% endif %}
+
+    </main>
+
+</body>
+
+</html>

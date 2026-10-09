@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nuevo equipo | Electronics Repair Shop</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body class="panel-body">
+
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a href="{{ url_for('logout') }}"
+               class="logout">
+
+                Cerrar sesión
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+
+        <a href="{{ url_for('equipos') }}"
+           class="btn-volver">
+
+            ← Volver a equipos
+
+        </a>
+
+
+        <div class="welcome">
+
+            <h2>Registrar nuevo equipo</h2>
+
+            <p>
+                Complete la información del equipo.
+            </p>
+
+        </div>
+
+
+        <div class="module-card">
+
+
+            <form method="POST">
+
+
+                <div class="form-group">
+
+                    <label for="idCliente">
+                        Cliente *
+                    </label>
+
+                    <select
+                        id="idCliente"
+                        name="idCliente"
+                        required
+                        style="
+                            width: 100%;
+                            padding: 13px;
+                            border: 1px solid #d1d5db;
+                            border-radius: 8px;
+                            font-size: 15px;
+                        "
+                    >
+
+                        <option value="">
+                            Seleccione un cliente
+                        </option>
+
+                        {% for cliente in clientes %}
+
+                            <option value="{{ cliente.idCliente }}">
+
+                                {{ cliente.apellido }},
+                                {{ cliente.nombre }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="tipo">
+                        Tipo de equipo *
+                    </label>
+
+                    <select
+                        id="tipo"
+                        name="tipo"
+                        required
+                        style="
+                            width: 100%;
+                            padding: 13px;
+                            border: 1px solid #d1d5db;
+                            border-radius: 8px;
+                            font-size: 15px;
+                        "
+                    >
+
+                        <option value="">
+                            Seleccione un tipo
+                        </option>
+
+                        <option value="Celular">
+                            Celular
+                        </option>
+
+                        <option value="Notebook">
+                            Notebook
+                        </option>
+
+                        <option value="PC">
+                            PC
+                        </option>
+
+                        <option value="Consola">
+                            Consola
+                        </option>
+
+                        <option value="Televisor">
+                            Televisor
+                        </option>
+
+                        <option value="Impresora">
+                            Impresora
+                        </option>
+
+                        <option value="Otro">
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="marca">
+                        Marca *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="marca"
+                        name="marca"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="modelo">
+                        Modelo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="modelo"
+                        name="modelo"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="numeroSerie">
+                        Número de serie
+                    </label>
+
+                    <input
+                        type="text"
+                        id="numeroSerie"
+                        name="numeroSerie"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="fallaInformada">
+                        Falla informada por el cliente
+                    </label>
+
+                    <textarea
+                        id="fallaInformada"
+                        name="fallaInformada"
+                        rows="4"
+                        style="
+                            width: 100%;
+                            padding: 13px;
+                            border: 1px solid #d1d5db;
+                            border-radius: 8px;
+                            font-size: 15px;
+                            resize: vertical;
+                        "
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="observaciones">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        id="observaciones"
+                        name="observaciones"
+                        rows="4"
+                        style="
+                            width: 100%;
+                            padding: 13px;
+                            border: 1px solid #d1d5db;
+                            border-radius: 8px;
+                            font-size: 15px;
+                            resize: vertical;
+                        "
+                    ></textarea>
+
+                </div>
+
+
+                <div style="
+                    display: flex;
+                    gap: 10px;
+                ">
+
+                    <button type="submit">
+                        Registrar equipo
+                    </button>
+
+                    <a
+                        href="{{ url_for('equipos') }}"
+                        style="
+                            text-decoration: none;
+                            width: 100%;
+                        "
+                    >
+
+                        <button type="button">
+                            Cancelar
+                        </button>
+
+                    </a>
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

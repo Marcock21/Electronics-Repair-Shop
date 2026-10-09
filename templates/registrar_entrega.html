@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Registrar entrega | Electronics Repair Shop</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="page-container">
+
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <main class="page-content">
+
+
+        <a
+            href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+            class="btn-volver"
+        >
+            ← Volver a la orden
+        </a>
+
+
+        <div class="page-header">
+
+            <h2>
+                Registrar entrega
+            </h2>
+
+            <p>
+                Registrar la entrega del equipo al cliente.
+            </p>
+
+        </div>
+
+
+        <!-- DATOS DE LA ORDEN -->
+
+        <section class="info-card">
+
+            <h3>Información de la orden</h3>
+
+            <div class="info-grid">
+
+
+                <div class="info-item">
+
+                    <strong>Orden</strong>
+
+                    <span>
+                        {{ reparacion.numeroOrden }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Cliente</strong>
+
+                    <span>
+                        {{ reparacion.nombreCliente }}
+                        {{ reparacion.apellidoCliente }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Equipo</strong>
+
+                    <span>
+                        {{ reparacion.tipo }}
+                        {{ reparacion.marca }}
+                        {{ reparacion.modelo or "" }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Estado</strong>
+
+                    <span>
+                        Listo para retirar
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- TOTAL -->
+
+        <section class="info-card">
+
+            <h3>Importe a cobrar</h3>
+
+            <div class="info-item">
+
+                <strong>Total</strong>
+
+                <span style="font-size: 24px; font-weight: bold;">
+                    ${{ "%.2f"|format(reparacion.total or 0) }}
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORMULARIO -->
+
+        <section class="form-card">
+
+            <h3>Datos de la entrega</h3>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('registrar_entrega', idOrden=reparacion.idOrden) }}"
+            >
+
+
+                <div class="form-field">
+
+                    <label for="metodoPago">
+                        Método de pago
+                    </label>
+
+                    <select
+                        name="metodoPago"
+                        id="metodoPago"
+                        required
+                    >
+
+                        <option value="">
+                            Seleccionar método de pago
+                        </option>
+
+                        <option value="Efectivo">
+                            Efectivo
+                        </option>
+
+                        <option value="Transferencia">
+                            Transferencia
+                        </option>
+
+                        <option value="Tarjeta">
+                            Tarjeta
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="observaciones">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        name="observaciones"
+                        id="observaciones"
+                        rows="5"
+                        placeholder="Observaciones sobre la entrega o el pago."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit">
+                        Registrar entrega
+                    </button>
+
+                    <a
+                        href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+                        style="text-decoration: none;"
+                    >
+
+                        <button
+                            type="button"
+                            class="btn-secundario"
+                        >
+                            Cancelar
+                        </button>
+
+                    </a>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Presupuestos | Electronics Repair Shop</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="panel-body">
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+
+        <a
+            href="{{ url_for('panel') }}"
+            class="btn-volver"
+        >
+            ← Volver al panel
+        </a>
+
+
+        <div class="welcome">
+
+            <h2>
+                Presupuestos
+            </h2>
+
+            <p>
+                Consulta y seguimiento de los presupuestos del taller.
+            </p>
+
+        </div>
+
+
+        <section class="module-card">
+
+
+            {% if presupuestos %}
+
+            <div style="overflow-x: auto;">
+
+                <table
+                    style="
+                        width: 100%;
+                        border-collapse: collapse;
+                    "
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Presupuesto
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Orden
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Cliente
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Equipo
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Estado
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Total
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Fecha
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Acción
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for presupuesto in presupuestos %}
+
+                        <tr>
+
+                            <td style="padding: 12px;">
+                                #{{ presupuesto.idPresupuesto }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+                                {{ presupuesto.numeroOrden }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                {{ presupuesto.nombreCliente }}
+                                {{ presupuesto.apellidoCliente }}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                {{ presupuesto.tipo }}
+                                {{ presupuesto.marca }}
+
+                                {% if presupuesto.modelo %}
+                                    {{ presupuesto.modelo }}
+                                {% endif %}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+                                {{ presupuesto.estado }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                ${{ "%.2f"|format(presupuesto.total) }}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+                                {{ presupuesto.fecha }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                <a
+                                    href="{{ url_for(
+                                        'detalle_reparacion',
+                                        idOrden=presupuesto.idOrden
+                                    ) }}"
+                                    style="text-decoration: none;"
+                                >
+
+                                    <button type="button">
+                                        Ver
+                                    </button>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+                <p>
+                    Todavía no hay presupuestos registrados.
+                </p>
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Registrar diagnóstico | Electronics Repair Shop
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body class="page-container">
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="page-content">
+
+        <a
+            href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+            class="btn-volver"
+        >
+            ← Volver a la orden
+        </a>
+
+
+        <div class="page-header">
+
+            <h2>
+                Registrar diagnóstico
+            </h2>
+
+            <p>
+                Orden {{ reparacion.numeroOrden }}
+            </p>
+
+        </div>
+
+
+        <!-- INFORMACIÓN DE LA ORDEN -->
+
+        <section class="info-card">
+
+            <h3>Información de la reparación</h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <strong>Orden</strong>
+
+                    <span>
+                        {{ reparacion.numeroOrden }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Cliente</strong>
+
+                    <span>
+                        {{ reparacion.nombreCliente }}
+                        {{ reparacion.apellidoCliente }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Equipo</strong>
+
+                    <span>
+                        {{ reparacion.tipo }}
+                        {{ reparacion.marca }}
+                        {{ reparacion.modelo or "" }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Técnico</strong>
+
+                    <span>
+
+                        {% if reparacion.nombreTecnico %}
+
+                            {{ reparacion.nombreTecnico }}
+                            {{ reparacion.apellidoTecnico }}
+
+                        {% else %}
+
+                            Sin asignar
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORMULARIO -->
+
+        <section class="form-card">
+
+            <h3>Diagnóstico técnico</h3>
+
+            <form method="POST">
+
+                <div class="form-field">
+
+                    <label for="descripcion">
+                        Descripción del diagnóstico
+                    </label>
+
+                    <textarea
+                        name="descripcion"
+                        id="descripcion"
+                        rows="7"
+                        required
+                        placeholder="Describí las fallas encontradas, pruebas realizadas y diagnóstico técnico."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="observaciones">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        name="observaciones"
+                        id="observaciones"
+                        rows="5"
+                        placeholder="Agregá observaciones adicionales."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit">
+                        Guardar diagnóstico
+                    </button>
+
+
+                    <a
+                        href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+                    >
+
+                        <button
+                            type="button"
+                            class="btn-secundario"
+                        >
+                            Cancelar
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

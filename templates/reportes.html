@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Reportes | Electronics Repair Shop</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="panel-body">
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+
+        <a
+            href="{{ url_for('panel') }}"
+            class="btn-volver"
+        >
+            ← Volver al panel
+        </a>
+
+
+        <div class="welcome">
+
+            <h2>
+                Reportes
+            </h2>
+
+            <p>
+                Resumen general de la actividad del taller.
+            </p>
+
+        </div>
+
+
+        <!-- RESUMEN GENERAL -->
+
+        <section class="info-card">
+
+            <h3>Resumen general</h3>
+
+            <div class="info-grid">
+
+
+                <div class="info-item">
+
+                    <strong>Clientes registrados</strong>
+
+                    <span style="font-size: 24px; font-weight: bold;">
+                        {{ total_clientes }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Equipos registrados</strong>
+
+                    <span style="font-size: 24px; font-weight: bold;">
+                        {{ total_equipos }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Órdenes de reparación</strong>
+
+                    <span style="font-size: 24px; font-weight: bold;">
+                        {{ total_ordenes }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Órdenes entregadas</strong>
+
+                    <span style="font-size: 24px; font-weight: bold;">
+                        {{ total_entregadas }}
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ÓRDENES POR ESTADO -->
+
+        <section class="info-card">
+
+            <h3>Órdenes por estado</h3>
+
+            {% if ordenes_por_estado %}
+
+            <div style="overflow-x: auto;">
+
+                <table
+                    style="
+                        width: 100%;
+                        border-collapse: collapse;
+                    "
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Estado
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Cantidad
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for estado in ordenes_por_estado %}
+
+                        <tr>
+
+                            <td style="padding: 12px;">
+                                {{ estado.estado }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ estado.cantidad }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No hay órdenes registradas.
+            </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- STOCK BAJO -->
+
+        <section class="info-card">
+
+            <h3>Stock bajo</h3>
+
+            {% if stock_bajo %}
+
+            <div style="overflow-x: auto;">
+
+                <table
+                    style="
+                        width: 100%;
+                        border-collapse: collapse;
+                    "
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Código
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Repuesto
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Stock actual
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Stock mínimo
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for repuesto in stock_bajo %}
+
+                        <tr>
+
+                            <td style="padding: 12px;">
+                                {{ repuesto.codigo }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ repuesto.nombre }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ repuesto.stock }}
+                            </td>
+
+                            <td style="padding: 12px;">
+                                {{ repuesto.stockMinimo }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No hay repuestos con stock bajo.
+            </p>
+
+            {% endif %}
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {{ equipo.tipo }} {{ equipo.marca }} |
+        Electronics Repair Shop
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="panel-body">
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a href="{{ url_for('logout') }}" class="logout">
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+        <a href="{{ url_for('equipos') }}"
+           class="btn-volver">
+            ← Volver a equipos
+        </a>
+
+
+        <div class="welcome">
+
+            <h2>
+                {{ equipo.marca }}
+                {{ equipo.modelo or "" }}
+            </h2>
+
+            <p>
+                Detalle del equipo.
+            </p>
+
+        </div>
+
+
+        <!-- DATOS DEL EQUIPO -->
+
+        <section class="module-card">
+
+            <h3>Información del equipo</h3>
+
+            <div class="client-details">
+
+                <p>
+                    <strong>Tipo:</strong>
+                    {{ equipo.tipo }}
+                </p>
+
+                <p>
+                    <strong>Marca:</strong>
+                    {{ equipo.marca }}
+                </p>
+
+                <p>
+                    <strong>Modelo:</strong>
+                    {{ equipo.modelo or "-" }}
+                </p>
+
+                <p>
+                    <strong>Número de serie:</strong>
+                    {{ equipo.numeroSerie or "-" }}
+                </p>
+
+                <p>
+                    <strong>Cliente:</strong>
+                    {{ equipo.nombreCliente }}
+                    {{ equipo.apellidoCliente }}
+                </p>
+
+                <p>
+                    <strong>Falla informada:</strong>
+                    {{ equipo.fallaInformada or "-" }}
+                </p>
+
+                <p>
+                    <strong>Observaciones:</strong>
+                    {{ equipo.observaciones or "-" }}
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ORDENES -->
+
+        <section class="module-card">
+
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            ">
+
+                <div>
+                    <h3>Órdenes de reparación</h3>
+
+                    <p>
+                        Historial de reparaciones de este equipo.
+                    </p>
+                </div>
+
+                <a
+                    href="{{ url_for('nueva_reparacion', idEquipo=equipo.idEquipo) }}"
+                    style="text-decoration: none;"
+                >
+                    <button type="button" style="width: auto;">
+                        + Nueva orden
+                    </button>
+                </a>
+
+            </div>
+
+
+            {% if reparaciones %}
+
+                <div style="overflow-x: auto;">
+
+                    <table style="width: 100%; border-collapse: collapse;">
+
+                        <thead>
+
+                            <tr>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Orden
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Ingreso
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Estado
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Técnico
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Prioridad
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Acción
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for reparacion in reparaciones %}
+
+                                <tr>
+
+                                    <td style="padding: 12px;">
+                                        {{ reparacion.numeroOrden }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ reparacion.fechaIngreso }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ reparacion.estado }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+
+                                        {% if reparacion.nombreTecnico %}
+
+                                            {{ reparacion.nombreTecnico }}
+                                            {{ reparacion.apellidoTecnico }}
+
+                                        {% else %}
+
+                                            Sin asignar
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ reparacion.prioridad }}
+                                    </td>
+
+                                    <td>
+
+                                        <a
+                                            href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+                                            style="text-decoration: none;"
+                                        >
+                                            <button type="button">
+                                                Ver
+                                            </button>
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    Este equipo todavía no tiene órdenes de reparación.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+    </main>
+
+</body>
+
+</html>

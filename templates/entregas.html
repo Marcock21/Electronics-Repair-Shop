@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Entregas | Electronics Repair Shop</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="panel-body">
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+
+        <a
+            href="{{ url_for('panel') }}"
+            class="btn-volver"
+        >
+            ← Volver al panel
+        </a>
+
+
+        <div class="welcome">
+
+            <h2>
+                Entregas
+            </h2>
+
+            <p>
+                Consulta y seguimiento de los equipos entregados.
+            </p>
+
+        </div>
+
+
+        <section class="module-card">
+
+
+            {% if entregas %}
+
+            <div style="overflow-x: auto;">
+
+                <table
+                    style="
+                        width: 100%;
+                        border-collapse: collapse;
+                    "
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Entrega
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Orden
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Cliente
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Equipo
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Fecha
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Entregado por
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Acción
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for entrega in entregas %}
+
+                        <tr>
+
+                            <td style="padding: 12px;">
+                                #{{ entrega.idEntrega }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+                                {{ entrega.numeroOrden }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                {{ entrega.nombreCliente }}
+                                {{ entrega.apellidoCliente }}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                {{ entrega.tipo }}
+                                {{ entrega.marca }}
+
+                                {% if entrega.modelo %}
+                                    {{ entrega.modelo }}
+                                {% endif %}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+                                {{ entrega.fecha }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                {% if entrega.nombreUsuario %}
+
+                                    {{ entrega.nombreUsuario }}
+                                    {{ entrega.apellidoUsuario }}
+
+                                {% else %}
+
+                                    Usuario #{{ entrega.entregadoPor }}
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                <a
+                                    href="{{ url_for(
+                                        'detalle_reparacion',
+                                        idOrden=entrega.idOrden
+                                    ) }}"
+                                    style="text-decoration: none;"
+                                >
+
+                                    <button type="button">
+                                        Ver
+                                    </button>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+                <p>
+                    Todavía no hay entregas registradas.
+                </p>
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

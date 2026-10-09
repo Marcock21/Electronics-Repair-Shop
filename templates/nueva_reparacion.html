@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nueva orden de reparación</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body class="page-container">
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>{{ session["nombre"] }}</span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="page-content">
+
+        <a
+            href="{{ url_for('detalle_equipo', idEquipo=equipo.idEquipo) }}"
+            class="btn-volver"
+        >
+            ← Volver al equipo
+        </a>
+
+
+        <div class="page-header">
+
+            <h2>Nueva orden de reparación</h2>
+
+            <p>
+                Registrá una nueva orden para el equipo seleccionado.
+            </p>
+
+        </div>
+
+
+        <!-- INFORMACIÓN DEL EQUIPO -->
+
+        <section class="info-card">
+
+            <h3>Información del equipo</h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <strong>Cliente</strong>
+
+                    <span>
+                        {{ equipo.nombreCliente }}
+                        {{ equipo.apellidoCliente }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Tipo</strong>
+
+                    <span>
+                        {{ equipo.tipo }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Marca</strong>
+
+                    <span>
+                        {{ equipo.marca }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Modelo</strong>
+
+                    <span>
+                        {{ equipo.modelo or "Sin especificar" }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Número de serie</strong>
+
+                    <span>
+                        {{ equipo.numeroSerie or "Sin especificar" }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Falla informada</strong>
+
+                    <span>
+                        {{ equipo.fallaInformada or "Sin información" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORMULARIO -->
+
+        <section class="form-card">
+
+            <h3>Datos de la orden</h3>
+
+            <form method="POST">
+
+
+                <!-- TÉCNICO Y ESTADO -->
+
+                <div class="form-row">
+
+                    <div class="form-field">
+
+                        <label for="idTecnico">
+                            Técnico asignado
+                        </label>
+
+                        <select
+                            name="idTecnico"
+                            id="idTecnico"
+                            required
+                        >
+
+                            <option value="">
+                                Seleccionar técnico
+                            </option>
+
+                            {% for tecnico in tecnicos %}
+
+                                <option value="{{ tecnico.idUsuario }}">
+
+                                    {{ tecnico.apellido }},
+                                    {{ tecnico.nombre }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="idEstado">
+                            Estado inicial
+                        </label>
+
+                        <select
+                            name="idEstado"
+                            id="idEstado"
+                            required
+                        >
+
+                            {% for estado in estados %}
+
+                                <option
+                                    value="{{ estado.idEstado }}"
+                                    {% if estado.idEstado == 1 %}
+                                        selected
+                                    {% endif %}
+                                >
+
+                                    {{ estado.nombre }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRIORIDAD -->
+
+                <div class="form-field">
+
+                    <label for="prioridad">
+                        Prioridad
+                    </label>
+
+                    <select
+                        name="prioridad"
+                        id="prioridad"
+                        required
+                    >
+
+                        <option value="Baja">
+                            Baja
+                        </option>
+
+                        <option
+                            value="Media"
+                            selected
+                        >
+                            Media
+                        </option>
+
+                        <option value="Alta">
+                            Alta
+                        </option>
+
+                        <option value="Urgente">
+                            Urgente
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PROBLEMA -->
+
+                <div class="form-field">
+
+                    <label for="problemaInformado">
+                        Problema reportado
+                    </label>
+
+                    <textarea
+                        name="problemaInformado"
+                        id="problemaInformado"
+                        rows="5"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- OBSERVACIONES -->
+
+                <div class="form-field">
+
+                    <label for="observaciones">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        name="observaciones"
+                        id="observaciones"
+                        rows="5"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="form-actions">
+
+                    <button type="submit">
+                        Crear orden de reparación
+                    </button>
+
+
+                    <a
+                        href="{{ url_for('detalle_equipo', idEquipo=equipo.idEquipo) }}"
+                    >
+
+                        <button
+                            type="button"
+                            class="btn-secundario"
+                        >
+                            Cancelar
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

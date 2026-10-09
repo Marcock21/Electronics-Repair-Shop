@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Panel - Taller de Reparaciones</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="panel-body">
+
+    <nav class="navbar">
+
+        <h1>Taller de Reparaciones</h1>
+
+        <div class="user-info">
+            <span>
+                {{ nombre }} {{ apellido }}
+            </span>
+
+            <span class="user-role">
+                {{ rol }}
+            </span>
+
+            <a href="{{ url_for('logout') }}" class="logout">
+                Cerrar sesión
+            </a>
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+        <div class="welcome">
+
+            <h2>Panel principal</h2>
+
+            <p>
+                Bienvenido/a, {{ nombre }}.
+                Desde aquí podrá gestionar las operaciones del taller.
+            </p>
+
+        </div>
+
+
+        <section class="modules">
+
+           <div class="module-card">
+
+    <h3>Clientes</h3>
+
+    <p>
+        Registrar y administrar clientes del taller.
+    </p>
+
+    <a href="{{ url_for('clientes') }}"
+       style="text-decoration: none;">
+
+        <button type="button">
+            Gestionar clientes
+        </button>
+
+    </a>
+
+</div>
+
+            <div class="module-card">
+
+    <h3>Equipos</h3>
+
+    <p>
+        Registrar y consultar los equipos ingresados al taller.
+    </p>
+
+    <a href="{{ url_for('equipos') }}"
+       style="text-decoration: none;">
+
+        <button type="button">
+            Gestionar equipos
+        </button>
+
+    </a>
+
+</div>
+
+           <div class="module-card">
+
+    <h3>Órdenes de reparación</h3>
+
+    <p>
+        Gestionar el estado y seguimiento
+        de las reparaciones.
+    </p>
+
+    <a
+        href="{{ url_for('reparaciones') }}"
+        style="text-decoration: none;"
+    >
+        <button type="button">
+            Gestionar órdenes
+        </button>
+    </a>
+
+</div>
+
+            <div class="module-card">
+    <h3>Diagnósticos</h3>
+    <p>Registrar diagnósticos técnicos de los equipos.</p>
+
+    <a
+        href="{{ url_for('diagnosticos') }}"
+        style="text-decoration: none;"
+    >
+        <button type="button">
+            Ver diagnósticos
+        </button>
+    </a>
+</div>
+
+            <div class="module-card">
+                <h3>Presupuestos</h3>
+                <p>Crear y administrar presupuestos.</p>
+
+                <a href="{{ url_for('presupuestos') }}"
+                   style="text-decoration: none;">
+
+                    <button type="button">
+                        Gestionar presupuestos
+                    </button>
+
+                </a>
+            </div>
+
+            <div class="module-card">
+                <h3>Repuestos</h3>
+                <p>Gestionar repuestos utilizados en las reparaciones.</p>
+                <a
+    href="{{ url_for('repuestos') }}"
+    style="text-decoration: none;"
+>
+    <button type="button">
+        Gestionar repuestos
+    </button>
+</a>
+            </div>
+
+            <div class="module-card">
+    <h3>Entregas</h3>
+    <p>Consultar los equipos entregados.</p>
+
+    <a
+        href="{{ url_for('entregas') }}"
+        style="text-decoration: none;"
+    >
+        <button type="button">
+            Gestionar entregas
+        </button>
+    </a>
+</div>
+
+            <div class="module-card">
+    <h3>Reportes</h3>
+    <p>Consultar información y estadísticas del taller.</p>
+
+    <a
+        href="{{ url_for('reportes') }}"
+        style="text-decoration: none;"
+    >
+        <button type="button">
+            Ver reportes
+        </button>
+    </a>
+</div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

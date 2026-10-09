@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Diagnósticos | Electronics Repair Shop</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="panel-body">
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+
+        <a
+            href="{{ url_for('panel') }}"
+            class="btn-volver"
+        >
+            ← Volver al panel
+        </a>
+
+
+        <div class="welcome">
+
+            <h2>
+                Diagnósticos
+            </h2>
+
+            <p>
+                Consulta de los diagnósticos técnicos registrados.
+            </p>
+
+        </div>
+
+
+        <section class="module-card">
+
+
+            {% if diagnosticos %}
+
+            <div style="overflow-x: auto;">
+
+                <table
+                    style="
+                        width: 100%;
+                        border-collapse: collapse;
+                    "
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Diagnóstico
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Orden
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Cliente
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Equipo
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Técnico
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Fecha
+                            </th>
+
+                            <th style="padding: 12px; text-align: left;">
+                                Acción
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for diagnostico in diagnosticos %}
+
+                        <tr>
+
+                            <td style="padding: 12px;">
+                                #{{ diagnostico.idDiagnostico }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+                                {{ diagnostico.numeroOrden }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                {{ diagnostico.nombreCliente }}
+                                {{ diagnostico.apellidoCliente }}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                {{ diagnostico.tipo }}
+                                {{ diagnostico.marca }}
+
+                                {% if diagnostico.modelo %}
+                                    {{ diagnostico.modelo }}
+                                {% endif %}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                {% if diagnostico.nombreTecnico %}
+
+                                    {{ diagnostico.nombreTecnico }}
+                                    {{ diagnostico.apellidoTecnico }}
+
+                                {% else %}
+
+                                    Sin asignar
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td style="padding: 12px;">
+                                {{ diagnostico.fecha }}
+                            </td>
+
+
+                            <td style="padding: 12px;">
+
+                                <a
+                                    href="{{ url_for(
+                                        'detalle_reparacion',
+                                        idOrden=diagnostico.idOrden
+                                    ) }}"
+                                    style="text-decoration: none;"
+                                >
+
+                                    <button type="button">
+                                        Ver
+                                    </button>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+                <p>
+                    Todavía no hay diagnósticos registrados.
+                </p>
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

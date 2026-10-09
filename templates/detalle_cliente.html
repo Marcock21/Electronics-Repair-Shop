@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {{ cliente.nombre }} {{ cliente.apellido }} |
+        Electronics Repair Shop
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="panel-body">
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a href="{{ url_for('logout') }}"
+               class="logout">
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+        <a href="{{ url_for('clientes') }}"
+           class="btn-volver">
+            ← Volver a clientes
+        </a>
+
+
+        <div class="welcome">
+
+            <h2>
+                {{ cliente.nombre }}
+                {{ cliente.apellido }}
+            </h2>
+
+            <p>
+                Información y actividad del cliente.
+            </p>
+
+        </div>
+
+
+        <section class="module-card">
+
+            <h3>Datos del cliente</h3>
+
+            <div class="client-details">
+
+                <p>
+                    <strong>Nombre:</strong>
+                    {{ cliente.nombre }}
+                    {{ cliente.apellido }}
+                </p>
+
+                <p>
+                    <strong>Teléfono:</strong>
+                    {{ cliente.telefono or "-" }}
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    {{ cliente.email or "-" }}
+                </p>
+
+                <p>
+                    <strong>Dirección:</strong>
+                    {{ cliente.direccion or "-" }}
+                </p>
+
+                <p>
+                    <strong>Cliente desde:</strong>
+                    {{ cliente.fechaRegistro }}
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="module-card">
+
+            <h3>Equipos</h3>
+
+            <p>
+                Equipos registrados a nombre de este cliente.
+            </p>
+
+            {% if equipos %}
+
+                <div style="overflow-x: auto;">
+
+                    <table style="width: 100%; border-collapse: collapse;">
+
+                        <thead>
+                            <tr>
+                                <th style="padding: 12px; text-align: left;">
+                                    Tipo
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Marca
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Modelo
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    N° de serie
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for equipo in equipos %}
+
+                                <tr>
+
+                                    <td style="padding: 12px;">
+                                        {{ equipo.tipo }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ equipo.marca }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ equipo.modelo or "-" }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ equipo.numeroSerie or "-" }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    Este cliente todavía no tiene equipos registrados.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <section class="module-card">
+
+            <h3>Historial de reparaciones</h3>
+
+            {% if reparaciones %}
+
+                <div style="overflow-x: auto;">
+
+                    <table style="width: 100%; border-collapse: collapse;">
+
+                        <thead>
+
+                            <tr>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Orden
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Equipo
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Ingreso
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Estado
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for reparacion in reparaciones %}
+
+                                <tr>
+
+                                    <td style="padding: 12px;">
+                                        {{ reparacion.numeroOrden }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ reparacion.tipo }}
+                                        {{ reparacion.marca }}
+                                        {{ reparacion.modelo or "" }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ reparacion.fechaIngreso }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ reparacion.estado }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    Este cliente todavía no tiene reparaciones registradas.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+    </main>
+
+</body>
+
+</html>

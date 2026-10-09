@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nuevo presupuesto | Electronics Repair Shop</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body class="page-container">
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="page-content">
+
+        <a
+            href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+            class="btn-volver"
+        >
+            ← Volver a la orden
+        </a>
+
+
+        <div class="page-header">
+
+            <h2>Nuevo presupuesto</h2>
+
+            <p>
+                Orden {{ reparacion.numeroOrden }}
+            </p>
+
+        </div>
+
+
+        <section class="info-card">
+
+            <h3>Información de la orden</h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <strong>Cliente</strong>
+
+                    <span>
+                        {{ reparacion.nombreCliente }}
+                        {{ reparacion.apellidoCliente }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Equipo</strong>
+
+                    <span>
+                        {{ reparacion.tipo }}
+                        {{ reparacion.marca }}
+                        {{ reparacion.modelo or "" }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Orden</strong>
+
+                    <span>
+                        {{ reparacion.numeroOrden }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Concepto</strong>
+
+                    <span>
+                        Presupuesto de reparación
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="form-card">
+
+            <h3>Detalle del presupuesto</h3>
+
+            <form method="POST">
+
+
+                <div class="form-field">
+
+                    <label for="descripcion">
+                        Descripción
+                    </label>
+
+                    <input
+                        type="text"
+                        name="descripcion"
+                        id="descripcion"
+                        placeholder="Ej.: Reparación del sistema de alimentación"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-field">
+
+                        <label for="cantidad">
+                            Cantidad
+                        </label>
+
+                        <input
+                            type="number"
+                            name="cantidad"
+                            id="cantidad"
+                            min="1"
+                            value="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="precioUnitario">
+                            Precio unitario
+                        </label>
+
+                        <input
+                            type="number"
+                            name="precioUnitario"
+                            id="precioUnitario"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="descuento">
+                        Descuento
+                    </label>
+
+                    <input
+                        type="number"
+                        name="descuento"
+                        id="descuento"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="observaciones">
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        name="observaciones"
+                        id="observaciones"
+                        rows="5"
+                        placeholder="Condiciones o aclaraciones del presupuesto."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit">
+                        Crear presupuesto
+                    </button>
+
+                    <a
+                        href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+                    >
+
+                        <button
+                            type="button"
+                            class="btn-secundario"
+                        >
+                            Cancelar
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Clientes | Electronics Repair Shop</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="panel-body">
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+            <span>{{ session["nombre"] }}</span>
+            <a href="{{ url_for('logout') }}" class="logout">
+                Cerrar sesión
+            </a>
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+        <div class="welcome">
+
+            <h2>Clientes</h2>
+
+            <p>
+                Clientes registrados en el sistema.
+            </p>
+
+            <a href="{{ url_for('panel') }}" class="btn-volver">
+    ← Volver al panel
+</a>
+
+        </div>
+
+
+        <div class="module-card">
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+
+                <h3>Listado de clientes</h3>
+
+                <form method="GET"
+      action="{{ url_for('clientes') }}"
+      style="display: flex; gap: 10px; margin-bottom: 20px;">
+
+    <input
+        type="text"
+        name="buscar"
+        placeholder="Buscar por nombre, apellido, teléfono o email"
+        value="{{ busqueda }}"
+        style="flex: 1; padding: 12px;"
+    >
+
+    <button type="submit" style="width: auto;">
+        Buscar
+    </button>
+
+    {% if busqueda %}
+        <a href="{{ url_for('clientes') }}"
+           style="text-decoration: none;">
+
+            <button type="button" style="width: auto;">
+                Limpiar
+            </button>
+
+        </a>
+    {% endif %}
+
+</form>
+
+                <a href="{{ url_for('nuevo_cliente') }}"
+                   style="text-decoration: none;">
+
+                    <button type="button">
+                        + Nuevo cliente
+                    </button>
+
+                </a>
+
+            </div>
+
+
+            {% if clientes %}
+
+                <div style="overflow-x: auto;">
+
+                    <table style="width: 100%; border-collapse: collapse;">
+
+                        <thead>
+
+                            <tr>
+                                <th style="padding: 12px; text-align: left;">ID</th>
+                                <th style="padding: 12px; text-align: left;">Nombre</th>
+                                <th style="padding: 12px; text-align: left;">Teléfono</th>
+                                <th style="padding: 12px; text-align: left;">Email</th>
+                                <th style="padding: 12px; text-align: left;">Dirección</th>
+                                <th style="padding: 12px; text-align: left;">Registro</th>
+                                <th style="padding: 12px; text-align: left;">Acciones</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for cliente in clientes %}
+
+                                <tr>
+
+                                    <td style="padding: 12px;">
+                                        {{ cliente.idCliente }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ cliente.nombre }}
+                                        {{ cliente.apellido }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ cliente.telefono or "-" }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ cliente.email or "-" }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ cliente.direccion or "-" }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ cliente.fechaRegistro }}
+                                    </td>
+                                    
+                                   <td style="padding: 12px;">
+
+    <a
+        href="{{ url_for('detalle_cliente', idCliente=cliente.idCliente) }}"
+        style="text-decoration: none;"
+    >
+
+        <button type="button">
+            Ver
+        </button>
+
+    </a>
+
+
+    <a
+        href="{{ url_for('editar_cliente', idCliente=cliente.idCliente) }}"
+        style="text-decoration: none;"
+    >
+
+        <button type="button">
+            Editar
+        </button>
+
+    </a>
+
+</td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    No hay clientes registrados todavía.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

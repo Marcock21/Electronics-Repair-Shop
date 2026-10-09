@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Repuestos | Electronics Repair Shop</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body class="panel-body">
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="panel-container">
+
+        <a
+            href="{{ url_for('panel') }}"
+            class="btn-volver"
+        >
+            ← Volver al panel
+        </a>
+
+
+        <div class="welcome">
+
+            <h2>Repuestos</h2>
+
+            <p>
+                Gestioná el inventario de repuestos del taller.
+            </p>
+
+        </div>
+
+
+        <section class="module-card">
+
+            <h3>Inventario</h3>
+
+            {% if repuestos %}
+
+                <div style="overflow-x: auto;">
+
+                    <table
+                        style="
+                            width: 100%;
+                            border-collapse: collapse;
+                        "
+                    >
+
+                        <thead>
+
+                            <tr>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Código
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Repuesto
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Stock
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Stock mínimo
+                                </th>
+
+                                <th style="padding: 12px; text-align: left;">
+                                    Precio venta
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for repuesto in repuestos %}
+
+                                <tr>
+
+                                    <td style="padding: 12px;">
+                                        {{ repuesto.codigo }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ repuesto.nombre }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ repuesto.stock }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        {{ repuesto.stockMinimo }}
+                                    </td>
+
+                                    <td style="padding: 12px;">
+                                        ${{ "%.2f"|format(repuesto.precioVenta) }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    No hay repuestos registrados.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

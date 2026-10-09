@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Agregar repuesto | Electronics Repair Shop
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body class="page-container">
+
+    <nav class="navbar">
+
+        <h1>Electronics Repair Shop</h1>
+
+        <div class="user-info">
+
+            <span>
+                {{ session["nombre"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="page-content">
+
+        <a
+            href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+            class="btn-volver"
+        >
+            ← Volver a la orden
+        </a>
+
+
+        <div class="page-header">
+
+            <h2>Agregar repuesto</h2>
+
+            <p>
+                Orden {{ reparacion.numeroOrden }}
+            </p>
+
+        </div>
+
+
+        <!-- INFORMACIÓN DE LA ORDEN -->
+
+        <section class="info-card">
+
+            <h3>Reparación</h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <strong>Orden</strong>
+
+                    <span>
+                        {{ reparacion.numeroOrden }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <strong>Equipo</strong>
+
+                    <span>
+                        {{ reparacion.tipo }}
+                        {{ reparacion.marca }}
+                        {{ reparacion.modelo or "" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORMULARIO -->
+
+        <section class="form-card">
+
+            <h3>Repuesto utilizado</h3>
+
+            <form method="POST">
+
+                <div class="form-field">
+
+                    <label for="idRepuesto">
+                        Repuesto
+                    </label>
+
+                    <select
+                        name="idRepuesto"
+                        id="idRepuesto"
+                        required
+                    >
+
+                        <option value="">
+                            Seleccionar repuesto
+                        </option>
+
+                        {% for repuesto in repuestos %}
+
+                            <option value="{{ repuesto.idRepuesto }}">
+
+                                {{ repuesto.nombre }}
+                                -
+                                {{ repuesto.codigo }}
+                                |
+                                Stock: {{ repuesto.stock }}
+                                |
+                                ${{ "%.2f"|format(repuesto.precioVenta) }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="cantidad">
+                        Cantidad utilizada
+                    </label>
+
+                    <input
+                        type="number"
+                        name="cantidad"
+                        id="cantidad"
+                        min="1"
+                        value="1"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit">
+                        Agregar repuesto
+                    </button>
+
+
+                    <a
+                        href="{{ url_for('detalle_reparacion', idOrden=reparacion.idOrden) }}"
+                    >
+
+                        <button
+                            type="button"
+                            class="btn-secundario"
+                        >
+                            Cancelar
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
